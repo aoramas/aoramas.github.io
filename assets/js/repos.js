@@ -13,9 +13,9 @@ var progress = 0;
 
     function RenderRepo($index) {
         repo = allrepos[$index];
-        var $item = $("<div>").addClass("card pin col-sm-6 col-lg-3");
-        var $link = $("<a>").attr("href", repoUrl(repo)).appendTo($item);
-        $link.append($("<h4>").html(repo.name + "<div class='org'><a href='" + repo.owner.html_url + "'>(" + repo.owner.login + ")"));
+        var $item = $("<div>").addClass("card pin col-12 col-md-4 mr-2");
+        var $link = $("<a>").addClass("card-body").attr("href", repoUrl(repo)).appendTo($item);
+        $link.append($("<h4>").html(repo.name + "<div class='card-title'><a href='" + repo.owner.html_url + "'>(" + repo.owner.login + ")"));
         $link.append($("<p>").text((repo.language != null) ? repo.language : ""));
         $item.append($("<small>").text((repo.description != null) ? repo.description : ""));
         $item.appendTo("#allrepos");
@@ -24,12 +24,18 @@ var progress = 0;
 
     function RenderUpdatedRepo($index) {
         repo = updated[$index];
-        var $item = $("<div>").addClass("card pin col-sm-6 col-lg-3");
-        var $link = $("<a>").attr("href", repoUrl(repo)).appendTo($item);
-        $link.append($("<h4>").html(repo.name + "<div class='org'><a href='" + repo.owner.html_url + "'>(" + repo.owner.login + ")"));
-        $link.append($("<p>").text((repo.language != null) ? repo.language : ""));
-        $item.append($("<small>").text((repo.description != null) ? repo.description : ""));
-        $item.appendTo("#updated");
+        var $card = $("<div>").addClass("card text-white bg-dark");
+        var $header  = $("<div>").addClass("card-header").html(repo.name);
+        var $footer  = $("<div>").addClass("card-footer");
+        $footer.append($("<a>").addClass("card-link text-white").attr("href", repoUrl(repo)).html("show"));
+        var $body = $("<div>").addClass("card-body");
+        $body.append($("<h6>").addClass("card-subtitle mb-2 text-muted").html(repo.owner.login) );
+        $body.append($("<p>").text((repo.language != null) ? repo.language : ""));
+        $body.append($("<p>").addClass("card-text").text((repo.description != null) ? repo.description : ""));
+        $card.append($header);
+        $card.append($body);
+        $card.append($footer);
+        $card.appendTo("#updated");
         return;
     }
 
@@ -42,7 +48,7 @@ var progress = 0;
             counter++;
         }
         var $header = $(".ibm_repo_header").text("Recently updated (" + counter + " of total " + updated.length + ") repos shown").addClass("text-center");
-        $header.append($("<span>").html("<a class='btn btn-primary' href='#showall' onclick='location.reload()'>Show all</a>"));
+       // $header.append($("<span>").html("<a class='btn btn-primary' href='#showall' onclick='location.reload()'>Show all</a>"));
     }
 
     function addAllRepos() {
@@ -165,7 +171,7 @@ var progress = 0;
     if (window.location.hash === '#showall') {
         $("<div>").appendTo("#wrapper").append($("<div id='allrepos'>"));
     } else {
-        $("<div>").appendTo("#wrapper").append($("<div id='updated'>"));
+        $("<div>").appendTo("#wrapper").append($("<div id='updated' class='card-columns'>"));
     }
 
 
